@@ -20,7 +20,6 @@ import {
   equipment,
 } from "./components/EquipmentShowcase";
 
-import { SocialSection } from "./components/SocialSection";
 
 const whatsapp = "5579999357485";
 const wa = (message: string) =>
