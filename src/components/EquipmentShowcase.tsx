@@ -11,11 +11,11 @@ import {
 } from "lucide-react";
 
 import betoneiraImg from "../assets/betoneira.jpeg";
-import escoraImg from "../assets/escoras320.png";
+import escoraImg from "../assets/escoras.jpeg";
 import marteloRompedor from "../assets/marteloRompedor.png";
 import andaimeTubular from "../assets/andaime-tubular.png";
 import rodizioAndaime from "../assets/rodizioAndaime.jpeg";
-import escora450 from "../assets/escoras.jpeg";
+import escora450 from "../assets/escoras320.png";
 import compactador from "../assets/compactador.jpeg";
 
 type Equipment = {
