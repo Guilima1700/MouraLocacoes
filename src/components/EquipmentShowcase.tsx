@@ -10,6 +10,11 @@ import {
   Wrench,
 } from "lucide-react";
 
+import betoneiraImg from "../assets/betoneira.jpeg";
+import escoraImg from "../assets/escoras.jpeg";
+import marteloRompedor from "../assets/marteloRompedor.png";
+import andaimeTubular from "../assets/andaime-tubular.png";
+
 type Equipment = {
   name: string;
   category: string;
@@ -44,7 +49,7 @@ export const equipment: Equipment[] = [
     icon: Box,
   },
   {
-    name: "Martelete perfurador",
+    name: "Martelete rompedor",
     category: "Ferramentas elétricas",
     description:
       "Ferramenta para perfuração e tarefas que pedem potência e precisão na execução.",
@@ -70,6 +75,16 @@ export function EquipmentShowcase() {
   const sectionRef = useRef<HTMLElement>(null);
   const activeEquipment = equipment[activeIndex];
   const EquipmentIcon = activeEquipment.icon;
+  const activeEquipmentImage =
+    activeIndex === 0
+      ? betoneiraImg
+      : activeIndex === 1
+        ? escoraImg
+        : activeIndex === 2
+          ? andaimeTubular
+          : activeIndex === 3
+            ? marteloRompedor
+            : null;
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -147,6 +162,14 @@ export function EquipmentShowcase() {
 
         <article className="equipment-detail reveal delay-2" aria-live="polite">
           <div className="equipment-detail-surface" key={activeEquipment.name}>
+            {activeEquipmentImage && (
+              <img
+                className="equipment-detail-photo"
+                src={activeEquipmentImage}
+                alt=""
+                aria-hidden="true"
+              />
+            )}
             <div className="equipment-detail-grid" aria-hidden="true" />
 
             <div className="equipment-detail-top">

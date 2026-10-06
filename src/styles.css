@@ -92,7 +92,6 @@ h3 {
   min-width: 162px;
 }
 .brand img {
-  width: 42px;
   height: 42px;
   border-radius: 50%;
   object-fit: cover;
@@ -296,7 +295,7 @@ h1 em::after {
   color: var(--green);
 }
 .hero-media {
-  height: 500px;
+  height: 535px;
   border-radius: var(--radius);
   position: relative;
   overflow: hidden;
@@ -511,17 +510,68 @@ h1 em::after {
   overflow: hidden;
 }
 .why-image {
-  min-height: 560px;
+  min-height: 600px;
+  max-height: 600px;
   position: relative;
   overflow: hidden;
 }
-.why-image img {
+.why-image img,
+.why-image video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 800ms var(--ease-smooth);
 }
-.why-image:hover img {
+.why-image video {
+  position: absolute;
+  inset: 0;
+}
+.why-image:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  min-height: 0;
+  max-height: none;
+  background: #000;
+}
+.why-image:fullscreen video {
+  object-fit: contain;
+  transform: none;
+}
+.why-image:fullscreen::after {
+  display: none;
+}
+.why-image video {
+  cursor: pointer;
+}
+.why-video-controls {
+  position: absolute;
+  z-index: 2;
+  right: clamp(16px, 4vw, 40px);
+  bottom: clamp(16px, 4vh, 32px);
+  left: clamp(16px, 4vw, 40px);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: #fff;
+  background: rgba(5, 20, 16, 0.78);
+  backdrop-filter: blur(8px);
+}
+.why-video-controls output {
+  min-width: 42px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+.why-video-controls input[type="range"] {
+  flex: 1;
+  min-width: 0;
+  accent-color: var(--lime);
+  cursor: pointer;
+}
+.why-image:hover img,
+.why-image:hover video {
   transform: scale(1.045);
 }
 .why-image::after {
@@ -529,6 +579,7 @@ h1 em::after {
   position: absolute;
   inset: 0;
   background: rgba(0, 36, 28, 0.18);
+  pointer-events: none;
 }
 .why-image button {
   position: absolute;
@@ -554,7 +605,7 @@ h1 em::after {
   transform: scale(1.08);
 }
 .why-copy {
-  padding: 100px 10vw 70px 7vw;
+  padding: 85px 10vw 0px 7vw;
 }
 .why .section-heading h2 {
   color: #fff;
@@ -707,6 +758,16 @@ h1 em::after {
 }
 .gallery-grid button:hover span {
   transform: translateY(-4px);
+}
+
+#link-insta {
+  text-decoration: none;
+  color: #fff;
+  transition: all 500ms;
+}
+
+#link-insta:hover {
+  text-decoration: underline;
 }
 
 .quote {

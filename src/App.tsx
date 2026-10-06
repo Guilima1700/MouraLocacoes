@@ -1,5 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
+import mouraIcon from "./assets/mouraIcon.png";
+import homeImg from "./assets/homeImg.jpg";
+import entregasImg from "./assets/entregaMoura.jpeg";
+import figuresMoura from "./assets/figuresMoura.jpeg";
+import equipamentsMoura from "./assets/equipamentsMoura.png";
+import locacaoMoura from "./assets/locacaoMoura.mp4"; 
+
 import {
   ArrowRight,
   Check,
@@ -38,6 +45,14 @@ function scrollTo(id: string) {
     ?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+function formatVideoTime(time: number) {
+  const totalSeconds = Math.floor(Number.isFinite(time) ? time : 0);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
+}
+
 function SectionHeading({
   eyebrow,
   title,
@@ -63,6 +78,11 @@ function App() {
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const presentationVideo = useRef<HTMLVideoElement>(null);
+  const presentationFrame = useRef<HTMLDivElement>(null);
+  const [presentationFullscreen, setPresentationFullscreen] = useState(false);
+  const [presentationTime, setPresentationTime] = useState(0);
+  const [presentationDuration, setPresentationDuration] = useState(0);
 
   useEffect(() => {
     const shouldLockScroll = open || lightbox !== null;
@@ -101,6 +121,66 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const video = presentationVideo.current;
+    const frame = presentationFrame.current;
+
+    if (!video || !frame) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.muted = true;
+          void video.play().catch(() => {});
+        } else if (!document.fullscreenElement) {
+          video.pause();
+        }
+      },
+      { threshold: 0.25 },
+    );
+
+    const handleFullscreenChange = () => {
+      const isFullscreen = document.fullscreenElement === frame;
+      setPresentationFullscreen(isFullscreen);
+
+      if (!isFullscreen) video.muted = true;
+    };
+
+    observer.observe(frame);
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      video.pause();
+    };
+  }, []);
+
+  const openPresentationFullscreen = () => {
+    const video = presentationVideo.current;
+    const frame = presentationFrame.current;
+
+    if (!video || !frame) return;
+
+    video.muted = false;
+    void frame.requestFullscreen().catch(() => {});
+    void video.play().catch(() => {
+      video.muted = true;
+    });
+  };
+
+  const togglePresentationPlayback = () => {
+    const video = presentationVideo.current;
+
+    if (!video) return;
+
+    if (video.paused) {
+      void video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  };
+
   const request = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -130,16 +210,12 @@ function App() {
       <header className={`header ${scrolled ? "is-scrolled" : ""}`}>
         <a className="brand" href="#inicio" aria-label="Moura Locações - início">
           <img
-            src="/assets/logo-moura.jpg"
+            src={mouraIcon}
             alt="Moura Locações"
             onError={(event) => {
               event.currentTarget.style.display = "none";
             }}
           />
-          <span>
-            <b>MOURA</b>
-            <small>LOCAÇÕES</small>
-          </span>
         </a>
 
         <nav aria-label="Navegação principal">
@@ -233,7 +309,8 @@ function App() {
 
           <div className="hero-media hero-media-enter">
             <img
-              src="/assets/entrega.jpg"
+              src={homeImg}
+              loading="lazy"
               alt="Veículo da Moura Locações realizando entrega de equipamentos"
             />
             <div className="media-label">
@@ -264,18 +341,54 @@ function App() {
         <EquipmentShowcase />
 
         <section className="why" id="diferenciais">
-          <div className="why-image reveal">
-            <img
-              src="/assets/locacao-vs-compra.jpg"
-              alt="Comparativo entre comprar e alugar equipamentos"
-              loading="lazy"
+          <div className="why-image reveal" ref={presentationFrame}>
+            <video
+              ref={presentationVideo}
+              src={locacaoMoura}
+              aria-label="Vídeo sobre a locação de equipamentos"
+              muted
+              playsInline
+              preload="metadata"
+              onClick={togglePresentationPlayback}
+              onTimeUpdate={(event) =>
+                setPresentationTime(event.currentTarget.currentTime)
+              }
+              onLoadedMetadata={(event) =>
+                setPresentationDuration(event.currentTarget.duration)
+              }
             />
-            <button
-              onClick={() => setLightbox("/assets/locacao-vs-compra.jpg")}
-              aria-label="Ampliar imagem do comparativo"
-            >
-              <Play size={18} />
-            </button>
+            {!presentationFullscreen && (
+              <button
+                type="button"
+                onClick={openPresentationFullscreen}
+                aria-label="Abrir vídeo em tela cheia com áudio"
+              >
+                <Play size={18} />
+              </button>
+            )}
+            {presentationFullscreen && (
+              <div className="why-video-controls">
+                <output>{formatVideoTime(presentationTime)}</output>
+                <input
+                  type="range"
+                  min="0"
+                  max={presentationDuration || 0}
+                  step="0.1"
+                  value={Math.min(presentationTime, presentationDuration || 0)}
+                  aria-label="Posição do vídeo"
+                  aria-valuetext={`${formatVideoTime(presentationTime)} de ${formatVideoTime(presentationDuration)}`}
+                  onChange={(event) => {
+                    const nextTime = Number(event.currentTarget.value);
+                    setPresentationTime(nextTime);
+
+                    if (presentationVideo.current) {
+                      presentationVideo.current.currentTime = nextTime;
+                    }
+                  }}
+                />
+                <output>{formatVideoTime(presentationDuration)}</output>
+              </div>
+            )}
           </div>
 
           <div className="why-copy reveal delay-2">
@@ -355,19 +468,19 @@ function App() {
 
           <div className="gallery-grid">
             <button
-              onClick={() => setLightbox("/assets/entrega.jpg")}
+              onClick={() => setLightbox(entregasImg)}
               className="gallery-large reveal"
             >
-              <img src="/assets/entrega.jpg" alt="Entrega da Moura Locações" loading="lazy" />
+              <img src={entregasImg} alt="Entrega da Moura Locações" loading="lazy" />
               <span>Entregas que acompanham o ritmo da obra <ArrowRight /></span>
             </button>
 
             <button
               className="reveal delay-2"
-              onClick={() => setLightbox("/assets/equipamentos.jpg")}
+              onClick={() => setLightbox(equipamentsMoura)}
             >
               <img
-                src="/assets/equipamentos.jpg"
+                src={equipamentsMoura}
                 alt="Catálogo de equipamentos da Moura Locações"
                 loading="lazy"
               />
@@ -376,14 +489,18 @@ function App() {
 
             <button
               className="reveal delay-3"
-              onClick={() => setLightbox("/assets/instagram.jpg")}
+              onClick={() => setLightbox(figuresMoura)}
             >
               <img
-                src="/assets/instagram.jpg"
+                src={figuresMoura}
                 alt="Publicações da Moura Locações"
                 loading="lazy"
               />
-              <span>Veja também no Instagram</span>
+              <span>
+                <a href="https://www.instagram.com/_mouralocacoes/" target="_blank" rel="noreferrer" id="link-insta">
+                  Veja também no Instagram
+                </a>
+              </span>
             </button>
           </div>
         </section>
