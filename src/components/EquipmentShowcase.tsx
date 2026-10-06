@@ -11,9 +11,12 @@ import {
 } from "lucide-react";
 
 import betoneiraImg from "../assets/betoneira.jpeg";
-import escoraImg from "../assets/escoras.jpeg";
+import escoraImg from "../assets/escoras320.png";
 import marteloRompedor from "../assets/marteloRompedor.png";
 import andaimeTubular from "../assets/andaime-tubular.png";
+import rodizioAndaime from "../assets/rodizioAndaime.jpeg";
+import escora450 from "../assets/escoras.jpeg";
+import compactador from "../assets/compactador.jpeg";
 
 type Equipment = {
   name: string;
@@ -64,6 +67,22 @@ export const equipment: Equipment[] = [
     highlight: "Compatível com andaime tubular",
     icon: Wrench,
   },
+  {
+    name: "Escora metálica 4,50 m",
+    category: "Estrutura",
+    description:
+      "Apoio regulável para sustentação de estruturas durante diferentes etapas da obra.",
+    highlight: "Altura: até 4,50 m",
+    icon: Ruler,
+  },
+  {
+    name: "Compactador de solo",
+    category: "Compactação",
+    description:
+      "Equipamento para compactar o solo e preparar a base para a execução da obra.",
+    highlight: "Compactação e preparação do solo",
+    icon: Wrench,
+  },
 ];
 
 const whatsapp = "5579999357485";
@@ -84,7 +103,13 @@ export function EquipmentShowcase() {
           ? andaimeTubular
           : activeIndex === 3
             ? marteloRompedor
-            : null;
+            : activeIndex === 4
+              ? rodizioAndaime
+              : activeIndex === 5
+                ? escora450
+                : activeIndex === 6
+                  ? compactador
+                  : null;
 
   useEffect(() => {
     const section = sectionRef.current;

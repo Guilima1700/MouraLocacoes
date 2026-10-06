@@ -163,7 +163,17 @@ function App() {
     if (!video || !frame) return;
 
     video.muted = false;
-    void frame.requestFullscreen().catch(() => {});
+
+    const webkitVideo = video as HTMLVideoElement & {
+      webkitEnterFullscreen?: () => void;
+    };
+
+    if (typeof frame.requestFullscreen === "function") {
+      void frame.requestFullscreen().catch(() => {});
+    } else {
+      webkitVideo.webkitEnterFullscreen?.();
+    }
+
     void video.play().catch(() => {
       video.muted = true;
     });
