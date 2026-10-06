@@ -508,7 +508,7 @@ function App() {
               />
               <span>
                 <a href="https://www.instagram.com/_mouralocacoes/" target="_blank" rel="noreferrer" id="link-insta">
-                  Veja também no Instagram
+                  Clique aqui e veja também no Instagram
                 </a>
               </span>
             </button>
