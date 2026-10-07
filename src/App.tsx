@@ -22,10 +22,8 @@ import {
   Wrench,
   X,
 } from "lucide-react";
-import {
-  EquipmentShowcase,
-  equipment,
-} from "./components/EquipmentShowcase";
+import { EquipmentShowcase } from "./components/EquipmentShowcase";
+import { equipment } from "./components/equipment-data";
 
 
 const whatsapp = "5579999357485";
@@ -38,15 +36,6 @@ const nav = [
   { label: "Como funciona", id: "como-funciona" },
   { label: "Diferenciais", id: "diferenciais" },
   { label: "Galeria", id: "galeria" },
-];
-
-const companyValues = [
-  { title: "Compromisso", description: "Com nossos clientes e parceiros." },
-  { title: "Qualidade", description: "Em cada equipamento e serviço." },
-  { title: "Agilidade", description: "Para manter sua obra em movimento." },
-  { title: "Transparência", description: "Em cada negociação." },
-  { title: "Proximidade", description: "Porque cada cliente importa." },
-  { title: "Evolução", description: "Sempre buscando melhorar." },
 ];
 
 function scrollTo(id: string) {
