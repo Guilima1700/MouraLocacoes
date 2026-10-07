@@ -33,10 +33,20 @@ const wa = (message: string) =>
   `https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`;
 
 const nav = [
+  { label: "Sobre nós", id: "sobre-nos" },
   { label: "Equipamentos", id: "equipamentos" },
   { label: "Como funciona", id: "como-funciona" },
   { label: "Diferenciais", id: "diferenciais" },
   { label: "Galeria", id: "galeria" },
+];
+
+const companyValues = [
+  { title: "Compromisso", description: "Com nossos clientes e parceiros." },
+  { title: "Qualidade", description: "Em cada equipamento e serviço." },
+  { title: "Agilidade", description: "Para manter sua obra em movimento." },
+  { title: "Transparência", description: "Em cada negociação." },
+  { title: "Proximidade", description: "Porque cada cliente importa." },
+  { title: "Evolução", description: "Sempre buscando melhorar." },
 ];
 
 function scrollTo(id: string) {
@@ -346,6 +356,51 @@ function App() {
           >
             Precisa de ajuda para escolher? <ArrowRight size={18} />
           </a>
+        </section>
+
+        <section className="about" id="sobre-nos">
+          <div className="about-inner">
+            <div className="about-overview">
+              <div className="about-story reveal">
+                <SectionHeading
+                  eyebrow="SOBRE NÓS"
+                  title="Ao lado de quem faz a construção acontecer."
+                  copy="A Moura Locações nasceu com um propósito simples: facilitar o dia a dia de quem constrói."
+                />
+                <p className="about-description">
+                  Somos uma empresa sergipana especializada na locação de
+                  equipamentos para construção civil, buscando oferecer
+                  praticidade, segurança e equipamentos que ajudam sua obra a
+                  avançar.
+                </p>
+                <div className="about-history">
+                  <strong>Há 2 anos</strong>
+                  <p>
+                    Construímos nossa história ao lado de quem faz a construção
+                    acontecer.
+                  </p>
+                </div>
+              </div>
+
+              <div className="about-purpose">
+                <article className="about-purpose-card reveal delay-1">
+                  <span>NOSSA MISSÃO</span>
+                  <h3>Facilitar o dia de quem constrói.</h3>
+                  <p>
+                    Oferecer equipamentos com qualidade, segurança e agilidade.
+                  </p>
+                </article>
+                <article className="about-purpose-card reveal delay-2">
+                  <span>NOSSA VISÃO</span>
+                  <h3>Crescer junto com nossos clientes.</h3>
+                  <p>
+                    Ser referência em locação de equipamentos para construção
+                    civil em Sergipe.
+                  </p>
+                </article>
+              </div>
+            </div>
+          </div>
         </section>
 
         <EquipmentShowcase />
