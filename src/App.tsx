@@ -616,7 +616,13 @@ function App() {
             Instagram: @_mouralocacoes
           </a>
         </div>
-        <small>© {new Date().getFullYear()} Moura Locações. Todos os direitos reservados.</small>
+        <small>
+          © {new Date().getFullYear()} Moura Locações. Todos os direitos reservados. Site desenvolvido pela{' '}
+          <a href="https://www.instagram.com/crystallcode/" target="_blank" rel="noreferrer">
+            Crystal Code
+          </a>
+          .
+        </small>
       </footer>
 
       <a
